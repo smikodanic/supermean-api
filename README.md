@@ -101,6 +101,33 @@ Start mongo server:
 
 
 &nbsp;
+## EXAMPLE ENDPOINTS
+If you want to play with examples this is the list of already prepared API endpoint to test Basic, Digest, JWT and HAsh authentication:
+```
+POST /examples/auth/users1-insmulti
+POST /examples/auth/users2-insmulti
+GET /examples/auth/users1-getall
+GET /examples/auth/users2-getall
+DELETE /examples/auth/users1-delete
+DELETE /examples/auth/users2-delete
+
+
+POST /examples/auth/passport/basicstrategy
+GET /examples/auth/passport/basicstrategy/getsomedata
+
+GET /examples/auth/passport/digeststrategy
+
+POST /examples/auth/passport/jwtstrategy-gettoken
+GET /examples/auth/passport/jwtstrategy
+GET /examples/auth/passport/jwtstrategy/getsomedata
+
+POST /examples/auth/passport/hashstrategy-gethash
+GET /examples/auth/passport/hashstrategy/e7b1951a91718085f4382391c31ef175df72addddb
+GET /examples/auth/passport/hashstrategy/getsomedata/e7b1951a91718085f4382391c31ef175df72addddb
+```
+
+
+&nbsp;
 
 ###Licence
 MIT
