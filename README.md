@@ -1,17 +1,17 @@
 # SuperMEAN - API
 SuperMEAN-API is framework for build API in NodeJS, Express and MongoDB.
 
-Usually use in conjuction with [Supermean-SPA](https://github.com/smikodanic/supermean-spa) (Single Page App) framework.
+Usually tied with [Supermean-SPA](https://github.com/smikodanic/supermean-spa) (Single Page App) framework.
 
 &nbsp;
 
 ## INSTALLATION
 ```sh
-git clone git@github.com:smikodanic/supermean-api.git
+git clone --depth 1 git@github.com:smikodanic/supermean-api.git <project-name>
 npm install
 ```
 
-&nbsp
+&nbsp;
 
 ## PORT
 Deafult port is 9005 for dev and 9001 for prod env.
