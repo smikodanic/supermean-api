@@ -3,6 +3,8 @@ SuperMEAN-API is framework for build API in NodeJS, Express and MongoDB.
 
 Usually tied with [Supermean-SPA](https://github.com/smikodanic/supermean-spa) (Single Page App) framework.
 
+More information on [www.supermean.org](http://www.supermean.org) .
+
 &nbsp;
 
 ## INSTALLATION
@@ -21,25 +23,25 @@ GET [localhost:9005](http://localhost:9005)
 ```json
 API RESPONSE:
 {
-  "api": {
-    "name": "SuperMEAN API",
-    "url": "http://api.dev.supermean.org",
-    "environment": "dev",
-    "server": {
-      "virtualHost": false,
-      "domain": "api.dev.supermean.loc",
-      "port": 9005
-    }
-  },
-  "nodejs": {
-    "version": "v4.4.5",
-    "platform": "linux",
-    "uptime": 724.715,
-    "uptime_human": "0 days 0 hours 12 minutes 4.715000000000032 seconds"
-  },
-  "mongoose": {
-    "version": "4.5.7"
-  }
+	"api": {
+		"name": "SuperMEAN API",
+		"url": "http://api.dev.supermean.org",
+		"environment": "dev",
+		"server": {
+			"virtualHost": false,
+			"domain": "api.dev.supermean.loc",
+			"port": 9005
+		}
+	},
+	"nodejs": {
+		"version": "v4.4.5",
+		"platform": "linux",
+		"uptime": 724.715,
+		"uptime_human": "0 days 0 hours 12 minutes 4.715000000000032 seconds"
+	},
+	"mongoose": {
+		"version": "4.5.7"
+	}
 }
 ```
 
