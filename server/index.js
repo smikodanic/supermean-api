@@ -3,7 +3,7 @@
  */
 
 var config = require('./app/config');
-var app = require('./app');
+var app = require('./app/_app');
 var port = config.env.server.port;
 
 
@@ -14,4 +14,4 @@ server.listen(port);
 
 //server events
 server.on('error', require('./events').onError(port));
-// server.on('listening', require('./events').onListening(server));
+server.on('listening', require('./events').onListening(server));
