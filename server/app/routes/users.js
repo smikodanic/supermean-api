@@ -119,7 +119,7 @@ module.exports.loggedinfo = function (req, res, next) {
 
     users_model.getUser(queryObj)
         .then(function (userDoc) {
-            res.json(userDoc2);
+            res.json(userDoc);
         })
         .catch(function (err) {
             err.level = 'error';
