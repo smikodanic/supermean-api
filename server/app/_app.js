@@ -1,30 +1,22 @@
-/**
- * ************** /server/api/index.js
- * Main application file
- * - middlewares
- * - api routing
- */
-
 /* enables requireing from root, for example require('server/app/config') */
 require('rootpath')();
 
-var config = require('./config');
-var express = require('express');
+const path = require('path');
+const express = require('express');
 var app = express();
-var path = require('path');
-
+var config = require('server/app/config');
 
 
 
 /***** MIDDLEWARES *****/
-/***********************/
 require('./middlewares/logger_morgan.js')(app, config); //must be first to log each request (also static files)
-require('./middlewares/debug.js')(app, config);
+// require('./middlewares/debug.js')(app, config);
 require('./middlewares/bodyParser.js')(app);
 
 //=-=-= database middlewares
 var dbConfig = config.env.database.mongodb[0]; //default database
 require('./middlewares/database/' + dbConfig.driver + 'Driver.js').konektDefault(dbConfig);
+
 
 //=-=-= virtual host
 // require('./middlewares/virtual_host.js')(app, config);
@@ -34,77 +26,34 @@ app.use('/assets', express.static(path.join(__dirname, '/assets')));
 
 //=-=-= auth middlewares
 require('./middlewares/auth/passport.js')(app); //passport common middleware
-require('./middlewares/auth/passportstrategy_basic.js')();
-require('./middlewares/auth/passportstrategy_digest.js')();
-require('./middlewares/auth/passportstrategy_jwt.js')();
-require('./middlewares/auth/passportstrategy_hash.js')();
+// require('./middlewares/auth/passportstrategy_basic.js')();
+// require('./middlewares/auth/passportstrategy_digest.js')();
+// require('./middlewares/auth/passportstrategy_hash.js')();
+require('./middlewares/auth/passportstrategy_jwt.js').defineStrategy4panel();
 
 
-/****** AUTH and CORS for each request *****/
-/************************************/
-// app.all('/', passport.authenticate('digest', {session: false}), function (req, res) {
-//     'use strict';
-//     //CROSS-DOMAIN RESOURCE SHARING
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-// });
+//=-=-= get client ip (req.client.ip)
+app.use(require('./middlewares/request-ip.js'));
+
+//=-=-= CORS PROBLEM & OTHER HEADERS
+app.use(require('./middlewares/cors.js'));
 
 
-//****** CORS PROBLEM & OTHER HEADERS *****
-//*****************
-app.use(function (req, res, next) {
-    'use strict';
-    res.set({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, HEAD',
-        'Access-Control-Max-Age': '3600'
-    });
-    // console.log(res.get('Access-Control-Allow-Origin'));
-    next();
-});
-
-
-/****** SERVER SIDE, API ROUTES *****/
-/************************************/
-app.use('/', require('./routes/index.js'));
-
-//*** api examples
-app.use('/examples', require('./routes/examples/index.js'));
-app.use('/examples/auth', require('./routes/examples/auth/index.js'));
-app.use('/examples/auth/passport', require('./routes/examples/auth/passport/index.js'));
+/****** API ROUTES *****/
+app.use('/', require('./routes/_routes.js'));
 
 
 
-
-/****** ERROR HANDLER *****/
-/************************************/
-app.use(require('./middlewares/errorHandler.js').asJSON);
-/*
-{
-  "status": 500,
-  "message": "APIerr: Converting circular structure to JSON",
-  "stack": "TypeError: Converting circular structure to JSON\n    at Object.stringify (native)\n    at module.exports.main (/homenode/supermean-api/server/app/routes/examples/auth/passport/basicstrategy.js:20:22)\
- }
- */
+/***** REBUILD MONGO INDEXES *****/
+if (config.rebuildIndexes) {//export NODE_RIND=true
+    require('./middlewares/database/rebuildIndexes').allModels();
+}
 
 
-
-
-/****** BAD URL, ERROR 404 *****/
-/************************************/
-app.use(function (req, res) {
-    'use strict';
-    var jdata = {
-        status: 404,
-        message: 'Error 404: URL not found!',
-        endpoint: req.method + ' ' + req.url
-    };
-
-    res.status(404).json(jdata);
-});
-
-
-
+/******************** ERROR HANDLERS ********************/
+app.use(require('./middlewares/error.js').badurl); //404 not found middleware. Must be last middleware !
+app.use(require('./middlewares/error.js').sender); //send error to client, sentry and mongo
+require('./middlewares/error.js').uncaught(); //uncaught exceptions
 
 
 

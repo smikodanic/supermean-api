@@ -18,7 +18,7 @@
  */
 var passport = require('passport');
 var HashStrategy = require('passport-hash').Strategy;
-var users_model = require('server/app/models/examples/users2');
+var users_model = require('server/app/models/users');
 
 
 module.exports = function () {

@@ -5,7 +5,7 @@ Usually tied with [Supermean-SPA](https://github.com/smikodanic/supermean-spa) (
 
 More information on [www.supermean.org](http://www.supermean.org) .
 
-&nbsp;
+
 
 ## INSTALLATION
 ```bash
@@ -14,7 +14,7 @@ yo supermean
 gulp
 ```
 
-&nbsp;
+
 
 ## PORT
 Deafult port is 9005 for dev and 9001 for prod env.
@@ -48,9 +48,6 @@ API RESPONSE:
 
 
 
-&nbsp;
-
-
 ## GULP DEVELOPMENT
 ```
 export NODE_ENV=dev
@@ -58,7 +55,6 @@ gulp default (watches for file changes)
 ```
 
 
-&nbsp;
 
 ## INTEGRATED FEATURES
 - npm
@@ -70,7 +66,7 @@ gulp default (watches for file changes)
 - mongoose
 - virtual host with vhost npm (optional)
 
-&nbsp;
+
 
 ## AUTHENTICATION & AUTHORIZATION (Built inside)
 PassportJS strategies are applied:
@@ -79,13 +75,23 @@ PassportJS strategies are applied:
 - [Json Web Token  (JWT)](https://github.com/themikenicholson/passport-jwt)
 - [HASH](https://github.com/yuri-karadzhov/passport-hash)
 
-&nbsp;
+
 
 ## ENVIRONMENTS
 * development: *$export NODE_ENV=dev*
 * production: *$export NODE_ENV=prod*
 
-&nbsp;
+
+## ENVIRONMENT VARIABLES
+- export NODE_RIND=true (will rebuild all mongo indexes)
+- export NODE_LOG_ERRORS=true (will log all errors to 'log_errors' mongo collection)
+- export NODE_LOG_ACCESS=true (will log all API access to 'log_access' mongo collection)
+
+
+## ERROR LEVELS
+'error', 'warning', 'info', 'debug'
+
+
 
 ## MongoDB
 API requires MongoDB database which is configured in
@@ -94,7 +100,7 @@ API requires MongoDB database which is configured in
 or
 **/server/app/config/env/prod.js**
 
-&nbsp;
+
 
 Start mongo server:
 
@@ -103,40 +109,20 @@ Start mongo server:
 *mongod --config /etc/mongod.conf*
 
 
-&nbsp;
+
 ## EXAMPLE ENDPOINTS
-If you want to play with examples this is the list of already prepared API endpoint to test Basic, Digest, JWT and HAsh authentication:
+User registration, login and get logged user info. JWT Passport authentication is used.
 ```
-POST /examples/auth/users1-insmulti
-POST /examples/auth/users2-insmulti
-GET /examples/auth/users1-getall
-GET /examples/auth/users2-getall
-DELETE /examples/auth/users1-delete
-DELETE /examples/auth/users2-delete
-
-
-POST /examples/auth/passport/basicstrategy
-GET /examples/auth/passport/basicstrategy/getsomedata
-
-GET /examples/auth/passport/digeststrategy
-
-POST /examples/auth/passport/jwtstrategy-gettoken
-GET /examples/auth/passport/jwtstrategy
-GET /examples/auth/passport/jwtstrategy/getsomedata
-
-POST /examples/auth/passport/hashstrategy-gethash
-GET /examples/auth/passport/hashstrategy/e7b1951a91718085f4382391c31ef175df72addddb
-GET /examples/auth/passport/hashstrategy/getsomedata/e7b1951a91718085f4382391c31ef175df72addddb
+POST /users/register
+POST /users/login
+GET /users/loggedinfo
 ```
 
 
-&nbsp;
 
-###Licence
+
+### Licence
 MIT
 
 **Freely you received, freely give. , Mt10:8**
 
-&nbsp;
-
-&nbsp;

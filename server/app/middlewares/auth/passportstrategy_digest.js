@@ -12,7 +12,7 @@
  */
 var passport = require('passport');
 var DigestStrategy = require('passport-http').DigestStrategy;
-var users_model = require('server/app/models/examples/users2');
+var users_model = require('server/app/models/users');
 var authLib = require('server/app/lib/authLib');
 
 module.exports = function () {

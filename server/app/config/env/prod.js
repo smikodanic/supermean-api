@@ -2,6 +2,15 @@
  ***** production environment
  * gulpFile: gulpfile-nodemon.js || gulpfile-pm2.js
  */
+
+//$export NODE_RIND=true  (will rebuild all mongoose indexes)
+var node_rind = false;
+if (process.env.NODE_RIND) {
+    node_rind = JSON.parse(process.env.NODE_RIND);
+}
+
+
+
 var config = {
 
     url: 'http://api.supermean.org',

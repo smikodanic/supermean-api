@@ -20,7 +20,7 @@
  */
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
-var users_model = require('server/app/models/examples/users1');
+var users_model = require('server/app/models/users');
 var authLib = require('server/app/lib/authLib');
 
 
