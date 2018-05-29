@@ -1,7 +1,7 @@
 /**
  * Middlewares
  */
-var authLib = require('server/app/lib/authLib');
+const authLib = require('server/app/lib/authLib');
 
 
 /**
@@ -9,7 +9,7 @@ var authLib = require('server/app/lib/authLib');
  * this.password - password to be crypted and entered by user
  * this.api_secret - api_secret to be crypted and entered by user
  */
-module.exports.cryptPassword = function (next) {
+module.exports.cryptPasswordApi_secret = function (next) {
     'use strict';
     this.password = authLib.strToBase64(this.password);
     // this.password = authLib.encrypt(this.password);

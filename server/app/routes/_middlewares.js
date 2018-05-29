@@ -3,11 +3,12 @@
  */
 const passport = require('passport');
 const chalk = require('chalk');
-var config = require('server/app/config');
-var log_access_model = require('server/app/models/log_access');
+const moment = require('moment');
+const config = require('server/app/config');
+const log_access_model = require('server/app/models').log_access;
 
 /** Passport auth middleware which will create req.user defined in /middlewares/auth/passportstrategy_jwt.js */
-module.exports.authCheckPanel = passport.authenticate('jwt-panel', {
+module.exports.authCheckUsers = passport.authenticate('jwt-users', {
     successRedirect: '',
     // failureRedirect: '/examples/auth/passport/badauth',
     failureRedirect: '',
@@ -47,16 +48,16 @@ module.exports.log_access = function (req, res, next) {
     }
 
     //=-=-=-= insert into 'log_access' collection =-=-=-=
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
     //if user is logged
-    var user_id, user_role;
+    let user_id, user_role;
     if (req.user) {
         user_id = req.user._id;
         user_role = req.user.role;
     }
 
-    var accessDoc = {
+    const accessDoc = {
         status: 200,
         verb: req.method,
         url: fullUrl,

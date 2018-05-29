@@ -18,10 +18,10 @@
  * 5. If compared data is OK the API resource is transfered.
  *
  */
-var passport = require('passport');
-var BasicStrategy = require('passport-http').BasicStrategy;
-var users_model = require('server/app/models/users');
-var authLib = require('server/app/lib/authLib');
+const passport = require('passport');
+const BasicStrategy = require('passport-http').BasicStrategy;
+const users_model = require('server/app/models/users');
+const authLib = require('server/app/lib/authLib');
 
 
 
@@ -36,7 +36,7 @@ module.exports = function () {
                     // console.log('username-pass:' + username + '-' + password);
                     // console.log(JSON.stringify(userDoc, null, 2));
 
-                    var err;
+                    let err;
 
                     //if username doesn't exist
                     if (!userDoc) {
@@ -52,7 +52,7 @@ module.exports = function () {
                         return done(err, false);
                     }
 
-                    // var 'userDoc' is transfered into req.user and can be used in controller req.user, where req.user = userDoc
+                    // const 'userDoc' is transfered into req.user and can be used in controller req.user, where req.user = userDoc
                     return done(null, userDoc);
 
                 })

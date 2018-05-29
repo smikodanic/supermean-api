@@ -8,7 +8,7 @@
  * RESTFull API must be stateless.
  */
 
-var passport = require('passport');
+const passport = require('passport');
 
 module.exports = function (app) {
     'use strict';

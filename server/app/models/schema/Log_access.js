@@ -5,13 +5,13 @@
 const Schema = require('mongoose').Schema;
 
 //options
-var opts = require('./_options');
+const opts = require('./_options');
 opts.collection = 'log_access';
 opts.strict = false;
 opts.timestamps = null; //disable timestamps
 
 //schema definition
-var Sch = new Schema({
+const Sch = new Schema({
     status: Number, //200, 404
     verb: String,
     url: String,

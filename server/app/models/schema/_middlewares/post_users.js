@@ -3,7 +3,7 @@
  */
 module.exports.afterUserDelete = function () {
     'use strict';
-    var queryObj = {user_id: this._id};
+    const queryObj = {user_id: this._id};
     this.model('dbmoDatabasesMD').remove(queryObj)
         .then(function (result) {
             // console.log('dbmoDatabasesMD', JSON.stringify(result, null, 2));

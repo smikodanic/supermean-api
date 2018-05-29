@@ -8,7 +8,7 @@ const mongoose = BPromise.promisifyAll(require('mongoose'));
 mongoose.Promise = BPromise; //Prevent error: "mpromise (mongoose's default promise library) is deprecated"
 
 //define model
-var logErrorsModel = mongoose.model('logErrorsMD', require('./schema/Log_errors'));
+const logErrorsModel = mongoose.model('logErrorsMD', require('./schema/Log_errors'));
 
 
 //insert doc
@@ -38,7 +38,7 @@ module.exports.listlogErrors = function (queryObj, limit, skip, sort) {
                 .sort(sort)
                 .execAsync()
                 .then(function (resultsArr) {
-                    var results = {
+                    const results = {
                         count: resultsNum,
                         dataArr: resultsArr
                     };

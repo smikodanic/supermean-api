@@ -2,7 +2,7 @@
  * Server events
  */
 
-var chalk = require('chalk');
+const chalk = require('chalk');
 
 
 
@@ -13,13 +13,13 @@ module.exports.onError = function (port) {
     'use strict';
 
     //onError callback function for server.on('error', onError);
-    var onError = function (error) {
+    const onError = function (error) {
 
         if (error.syscall !== 'listen') {
             throw error;
         }
 
-        var bind = (typeof port === 'string')
+        const bind = (typeof port === 'string')
             ? 'Pipe ' + port
             : 'Port ' + port;
 
@@ -51,9 +51,9 @@ module.exports.onListening = function (server) {
     'use strict';
 
     //onError callback function for server.on('listening', onListening);
-    var onListening = function () {
-        var addr = server.address();
-        var bind = typeof addr === 'string'
+    const onListening = function () {
+        const addr = server.address();
+        const bind = typeof addr === 'string'
             ? 'pipe ' + addr
             : 'port ' + addr.port;
 

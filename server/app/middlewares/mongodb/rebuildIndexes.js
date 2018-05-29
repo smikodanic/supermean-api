@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-var config = require('server/app/config');
+const config = require('server/app/config');
 
 /**
  * Rebuild indexes for one model (collection)
@@ -27,11 +27,11 @@ module.exports.oneModel = function (modelName) {
  */
 module.exports.allModels = function () {
     'use strict';
-    var mongoose = require('mongoose');
+    const mongoose = require('mongoose');
 
     console.log(chalk.blue('NODE_RIND=true - Mongo indexes rebuild for: ', mongoose.modelNames()));
 
-    var modelsArr = mongoose.modelNames();
+    const modelsArr = mongoose.modelNames();
     /*
     [
         'usersMD',

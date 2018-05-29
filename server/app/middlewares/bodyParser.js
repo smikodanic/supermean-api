@@ -4,7 +4,7 @@
  * https://www.npmjs.com/package/body-parser
  */
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 module.exports = function (app) {
     'use strict';

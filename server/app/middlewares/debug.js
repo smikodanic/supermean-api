@@ -3,8 +3,8 @@
  * Start server with: DEBUG=api:index.js node server
  */
 
-var debug = require('debug')('api:index.js');
-var chalk = require('chalk');
+const debug = require('debug')('api:index.js');
+const chalk = require('chalk');
 
 
 module.exports = function (app, config) {

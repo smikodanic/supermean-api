@@ -1,7 +1,7 @@
 /**
  * Get client IP address.
  */
-var requestIp = require('request-ip');
+const requestIp = require('request-ip');
 
 module.exports = function (req, res, next) {
     'use strict';

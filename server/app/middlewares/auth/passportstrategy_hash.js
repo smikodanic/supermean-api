@@ -16,9 +16,9 @@
  * The advantage is because protected API endpoints can be accesed by links. For example in emails, chats ...etc.
  * <a href="/examples/auth/passport/hashstrategy/0abc12df345">protected api endpoint</a>
  */
-var passport = require('passport');
-var HashStrategy = require('passport-hash').Strategy;
-var users_model = require('server/app/models/users');
+const passport = require('passport');
+const HashStrategy = require('passport-hash').Strategy;
+const users_model = require('server/app/models/users');
 
 
 module.exports = function () {
@@ -31,12 +31,12 @@ module.exports = function () {
 
                 //if user is not found
                 if (!userDoc) {
-                    var err = new Error('Forbidden access. Bad hash: ' + hash);
+                    const err = new Error('Forbidden access. Bad hash: ' + hash);
                     err.status = 403;
                     return done(err, false);
                 }
 
-                /* var 'userDoc' is transfered into req.user and can be used in controller req.user */
+                /* const 'userDoc' is transfered into req.user and can be used in controller req.user */
                 return done(null, userDoc);
 
             })

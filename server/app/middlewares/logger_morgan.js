@@ -3,7 +3,7 @@
  * https://github.com/expressjs/morgan
  */
 
-var morgan = require('morgan');
+const morgan = require('morgan');
 
 module.exports = function (app, config) {
     'use strict';

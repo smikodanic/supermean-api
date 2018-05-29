@@ -10,9 +10,9 @@
  */
 module.exports.secondsToString = function (seconds) {
     'use strict';
-    var numdays = Math.floor(seconds / 86400);
-    var numhours = Math.floor((seconds % 86400) / 3600);
-    var numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-    var numseconds = ((seconds % 86400) % 3600) % 60;
-    return numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
+    const numdays = Math.floor(seconds / 86400);
+    const numhours = Math.floor((seconds % 86400) / 3600);
+    const numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
+    const numseconds = ((seconds % 86400) % 3600) % 60;
+    return numdays + ' days ' + numhours + ' hours ' + numminutes + ' minutes ' + numseconds + ' seconds';
 };

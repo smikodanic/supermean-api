@@ -33,7 +33,7 @@ module.exports.alreadyExist = function (modelName, path) {
 
     return function (pathValue, next) {
         //define query object, for example: queryObj = {email: pathValue}
-        var queryObj = {};
+        const queryObj = {};
         queryObj[path] = pathValue;
 
         this.model(modelName).count(queryObj, function (err, count) {

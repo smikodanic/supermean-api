@@ -2,13 +2,13 @@
  * /users/...
  */
 const jwt = require('jsonwebtoken');
-var users_model = require('server/app/models/users');
-var config = require('server/app/config');
+const users_model = require('server/app/models').users_model;
+const config = require('server/app/config');
 
 
 /**
- * Register user.
  * POST /users/register
+ * Register user with specific role (admin, customer, ...).
 {
     "first_name": "Marko",
     "last_name": "Marković",
@@ -20,20 +20,8 @@ var config = require('server/app/config');
     "email": "test@uniapi.com",
     "website": "www.uniapi.org",
 
-    "company": {
-        "name": "Cloud jdoo",
-        "address": "V . Nazora 47",
-        "city": "Našice",
-        "country": "Croatia",
-        "email": "cloudjdoo@gmail.com"
-    },
-
-    "misc": {
-        "facebook": "brvno"
-    },
-
     "username": "marko",
-    "password": "12345",
+    "password": "test123",
 
     "role": "admin"
 }
@@ -41,7 +29,7 @@ var config = require('server/app/config');
 module.exports.register = function (req, res, next) {
     'use strict';
 
-    var userDoc = req.body;
+    const userDoc = req.body;
 
     /*** insert user into 'users' collection ***/
     users_model.register(userDoc)
@@ -54,76 +42,78 @@ module.exports.register = function (req, res, next) {
             });
         })
         .catch(function (err) {
-            err.level = 'error';
-            err.category = 'user';
-            console.log(err.stack);
+            err.category = 'api';
+            console.log(err);
             next(err);
         });
 
 };
 
 
+
 /**
- * Login with username:password and respond with JWT token.
  * POST /users/login
 {
     "username": "marko",
     "password": "12345"
 }
- *
- * $ curl -X POST http://localhost:3011/uni/users/login -d "username=marko&pass=test"
+ * After successful login with username:password a JWT token is sent as response.
  */
 module.exports.login = function (req, res, next) {
     'use strict';
 
-    var username = req.body.username;
-    var password = req.body.password;
+    const username = req.body.username;
+    const password = req.body.password;
 
     users_model.login(username, password)
         .then(function (userDoc) {
 
             //generate token by JWT
-            var jwt_payload = {id: userDoc._id, username: userDoc.username};
-            var jwtToken = jwt.sign(jwt_payload, config.api_secret);
+            const jwt_payload = {id: userDoc._id, username: userDoc.username};
+            const jwtToken = jwt.sign(jwt_payload, config.api_secret);
 
-            var jdata = {
-                isLoggedIn: true,
-                msg: 'Login was successful. JWT Token is generated and you can use it in request header. Authorization: JWT ' + jwtToken,
-                putLocally: {
-                    username: userDoc.username,
-                    authHeader: 'JWT ' + jwtToken
-                }
-            };
+            //update jwt_token which will be used for node-cron & socket.io authentication
+            return users_model.editOne({_id: userDoc._id}, {jwt_token: jwtToken})
+                .then(function () {
+                    const jdata = {
+                        success: true,
+                        message: 'Login was successful. JWT is generated and you can use it in API request header. Authorization: JWT ' + jwtToken,
+                        browser_storage: {
+                            username: userDoc.username,
+                            authorization_header: 'JWT ' + jwtToken
+                        }
+                    };
+                    res.json(jdata);
+                });
 
-            res.json(jdata);
         })
         .catch(function (err) {
-            err.level = 'error';
-            err.category = 'user';
+            err.category = 'api';
             next(err);
         });
-
 };
 
 
+
 /**
- * GET /users/info
- * Get logged user data (without password).
+ * GET /users/loggedinfo
+ * Authorization: JWT xyz...
+ * Get logged user data (without password). User must be logged.
  */
 module.exports.loggedinfo = function (req, res, next) {
     'use strict';
 
-    var username = req.user.username; //comes from /server/app/middlewares/auth/passportstrategy_jwt.js
+    const username = req.user.username; //comes from /server/app/middlewares/auth/passportstrategy_jwt.js
 
-    var queryObj = {username: username};
+    const queryObj = {username: username};
 
-    users_model.getUser(queryObj)
+    users_model.getOne(queryObj)
         .then(function (userDoc) {
             res.json(userDoc);
         })
         .catch(function (err) {
-            err.level = 'error';
-            err.category = 'user';
+            err.category = 'api';
             next(err);
         });
 };
+

@@ -1,9 +1,9 @@
-var timeLib = require('server/app/lib/timeLib.js');
-var config = require('server/app/config');
+const timeLib = require('server/app/lib/timeLib.js');
+const config = require('server/app/config');
 
 module.exports.root = function (req, res) {
     'use strict';
-    var jdata = {
+    const jdata = {
         success: true
     };
     res.json(jdata);
@@ -14,10 +14,10 @@ module.exports.apiinfo = function (req, res) {
     'use strict';
 
     //get uptime
-    var uptime = process.uptime();
-    var uptime_human = timeLib.secondsToString(uptime);
+    const uptime = process.uptime();
+    const uptime_human = timeLib.secondsToString(uptime);
 
-    var jdata = {
+    const jdata = {
         api: {
             name: config.api_name,
             version: 'v1',
@@ -33,6 +33,16 @@ module.exports.apiinfo = function (req, res) {
         },
         mongoose: {
             version: require('mongoose').version
+        },
+        socket_io: {
+            version: require('socket.io/package').version
+        },
+        client: {
+            ip: req.client.ip,
+            headers: req.headers,
+            body: req.body,
+            params: req.params,
+            query: req.query
         }
     };
     res.json(jdata);

@@ -5,8 +5,8 @@ const config = require('server/app/config');
 const chalk = require('chalk');
 const moment = require('moment');
 
-var log_errors_model = require('server/app/models/log_errors');
-var log_access_model = require('server/app/models/log_access');
+const log_errors_model = require('server/app/models/log_errors');
+const log_access_model = require('server/app/models/log_access');
 
 
 /**
@@ -14,11 +14,11 @@ var log_access_model = require('server/app/models/log_access');
  * @param  {Error} err - non formatted error
  * @return {Object}     - JSON formatted error message
  */
-var send2client = function (err, res) {
+const send2client = function (err, res) {
     'use strict';
 
     //object which will be sent
-    var jsonErr = {
+    const jsonErr = {
         status: err.status || 500,
         message: err.message,
         stack: err.stack,
@@ -27,8 +27,8 @@ var send2client = function (err, res) {
 
     //Make mongoose 'unique' errors human readable
     if (jsonErr.message.indexOf('E11000') !== -1) {
-        // var fieldName = jsonErr.message.match(/\$(.+) dup/g)[0]; //old mongoose
-        var fieldName = jsonErr.message.match(/index: (.+) dup/g)[0];
+        // const fieldName = jsonErr.message.match(/\$(.+) dup/g)[0]; //old mongoose
+        let fieldName = jsonErr.message.match(/index: (.+) dup/g)[0];
         // fieldName = fieldName.replace('$ ', ''); //old mongoose
         fieldName = fieldName.replace('index: ', '');
         fieldName = fieldName.replace(' dup', '');
@@ -46,13 +46,17 @@ var send2client = function (err, res) {
  * @param  {Function} next
  * @return null
  */
-var send2mongo = function (err, req, next) {
+const send2mongo = function (err, req, next) {
     'use strict';
 
-    //full url
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    if (!config.log_errors) {//export NODE_LOG_ERRORS=false
+        return;
+    }
 
-    var errDoc = {
+    //full url
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+    const errDoc = {
         status: err.status || 500,
         level: err.level || 'error',
         category: err.category || 'general',
@@ -91,7 +95,7 @@ var send2mongo = function (err, req, next) {
 };
 
 
-var send2console = function (err) {
+const send2console = function (err) {
     'use strict';
     //output to console (only in dev environment)
     if (config.env.name === 'dev') {
@@ -107,8 +111,8 @@ module.exports.sender = function (err, req, res, next) {
 
     /*** OUTPUT ***/
     send2client(err, res);
-    send2mongo(err, req, next);
     send2console(err);
+    send2mongo(err, req, next);
 };
 
 
@@ -118,7 +122,7 @@ module.exports.sender = function (err, req, res, next) {
 module.exports.badurl = function (req, res, next) {
     'use strict';
 
-    var jErr = {
+    const jErr = {
         status: 404,
         message: 'Error 404: URL not found!',
         endpoint: req.method + ' ' + req.url
@@ -128,15 +132,15 @@ module.exports.badurl = function (req, res, next) {
 
 
     //=-=-=-= insert into 'log_access' collection =-=-=-=
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
-    var user_id, user_role;
+    let user_id, user_role;
     if (req.user) {
         user_id = req.user._id;
         user_role = req.user.role;
     }
 
-    var accessDoc = {
+    const accessDoc = {
         status: 404,
         verb: req.method,
         url: fullUrl,
@@ -162,7 +166,7 @@ module.exports.uncaught = function () {
     process.on('uncaughtException', function (err) {
 
         //insert to mongodb
-        var errDoc = {
+        const errDoc = {
             status: 500,
             level: 'error',
             category: 'uncaught',

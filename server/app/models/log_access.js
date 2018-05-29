@@ -7,7 +7,7 @@ const mongoose = BPromise.promisifyAll(require('mongoose'));
 mongoose.Promise = BPromise; //Prevent error: "mpromise (mongoose's default promise library) is deprecated"
 
 //define model
-var logAccessModel = mongoose.model('logAccessMD', require('./schema/Log_access'));
+const logAccessModel = mongoose.model('logAccessMD', require('./schema/Log_access'));
 
 
 //insert doc
@@ -37,7 +37,7 @@ module.exports.listlogAccess = function (queryObj, limit, skip, sort) {
                 .sort(sort)
                 .execAsync()
                 .then(function (resultsArr) {
-                    var results = {
+                    const results = {
                         count: resultsNum,
                         dataArr: resultsArr
                     };

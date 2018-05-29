@@ -1,19 +1,14 @@
-/**
- * Users schema
- */
-
 const Schema = require('mongoose').Schema;
-var vText = require('./_validators/validateText.js');
-var vResource = require('./_validators/validateResource.js');
-
+const vText = require('./_validators/validateText.js');
+const vResource = require('./_validators/validateResource.js');
 
 //options
-var opts = require('./_options');
+const opts = require('./_options');
 opts.collection = 'users';
 
 
 //schema definition
-var Sch = new Schema({
+const Sch = new Schema({
 
     first_name: {type: String, required: 'First name is required'},
     last_name: {type: String, required: 'Last name is required'},
@@ -30,22 +25,17 @@ var Sch = new Schema({
     username: {type: String, required: 'Username is required', index: {name: 'username', unique: true}},
     password: {type: String, required: 'Password is required'},
 
-    approved: {type: Boolean, default: true},
-    role: {type: String, enum: ['admin', 'moderator', 'editor', 'author', 'contributor']}
+    role: {type: String, enum: ['admin', 'customer'], default: 'customer'},
+    is_active: {type: Boolean, default: true}
 
 }, opts);
 
 
-/* =-=-=-=-= ADDS =-=-=-=-= */
-var counterObj = require('./_adds/counter');
-Sch.add({counter: counterObj});
-
-
 /* =-=-=-=-= MIDDLEWARES (pre & post hooks) =-=-=-=-= */
-var pre_users = require('./_middlewares/pre_users');
-var post_users = require('./_middlewares/post_users');
-Sch.pre('save', pre_users.cryptPassword);
-Sch.post('remove', post_users.afterUserDelete);
+const pre_users = require('./_middlewares/pre_users');
+// const post_users = require('./_middlewares/post_users');
+Sch.pre('save', pre_users.cryptPasswordApi_secret);
+// Sch.post('remove', post_users.afterUserDelete);
 
 
 /* =-=-=-=-= VALIDATORS [activated on doc.save() or doc.validate()] =-=-=-=-= */

@@ -7,45 +7,43 @@ const chalk = require('chalk');
 const util = require('util');
 
 //options
-var timeout = 30 * 1000; //30 seconds
-var connOpts = {
-    server: {
-        keepAlive: timeout,
-        connectTimeoutMS: timeout
-    }
+const timeout = 30 * 1000; //30 seconds
+const connOpts = {
+    // useMongoClient: true, //deprecated in mongoose 5
+    keepAlive: timeout,
+    connectTimeoutMS: timeout,
+    poolSize: 2
 };
 
 
 //events
-var onEvent = function (conn) {
+const onEvent = function (conn, dbConfig) {
     'use strict';
-
-    var dbShort = conn.host + ':' + conn.port + '/' + conn.name;
 
     //events mongoose.connection or db
     conn.on('error', function (err) {
-        console.error(chalk.blue(dbShort, err, 'readyState:' + conn.readyState));
+        console.error(chalk.red(dbConfig.uri, err, 'readyState:' + conn.readyState));
     });
 
     conn.on('connected', function () {
-        console.info(chalk.blue(dbShort, '-connected'));
+        console.info(chalk.blue(dbConfig.uri, '-connected'));
     });
 
     conn.on('open', function () {
-        console.info(chalk.blue(dbShort, '-connection open'));
+        // console.info(chalk.blue(dbConfig.uri, '-connection open'));
     });
 
     conn.on('reconnected', function () {
-        console.info(chalk.blue(dbShort, '-connection reconnected'));
+        console.info(chalk.blue(dbConfig.uri, '-connection reconnected'));
     });
 
     conn.on('disconnected', function () {
-        console.warn(chalk.blue(dbShort, '-connection disconnected'));
+        console.warn(chalk.blue(dbConfig.uri, '-connection disconnected'));
     });
 
     process.on('SIGINT', function () {
         mongoose.disconnect(function () {
-            console.log(chalk.blue(dbShort, '-disconnected on app termination by SIGINT'));
+            console.log(chalk.blue(dbConfig.uri, '-disconnected on app termination by SIGINT'));
             process.exit(0);
         });
     });
@@ -53,34 +51,34 @@ var onEvent = function (conn) {
 
 
 //make default connection when nodejs app is started (see: server/app/index.js)
-module.exports.konektDefault = function (dbConfig) {
+module.exports.connectDefault = function (dbConfig) {
     'use strict';
 
-    if (!dbConfig.isActive) return;
+    if (!dbConfig.enabled) return;
 
     //establish mongoose connection (use 'mongoose.connection')
-    var db = mongoose.connect(dbConfig.uri, connOpts);
+    const db = mongoose.connect(dbConfig.uri, connOpts);
     // console.log(util.inspect(db));
 
     //show events
-    onEvent(mongoose.connection);
+    onEvent(mongoose.connection, dbConfig);
 
 };
 
 
 //create connection on demand
-module.exports.konekt = function (dbConfig) {
+module.exports.connect = function (dbConfig) {
     'use strict';
 
     //establish mongoose connection (use 'db')
-    var db = mongoose.createConnection(dbConfig.uri, connOpts);
+    const db = mongoose.createConnection(dbConfig.uri, connOpts);
     // console.log(util.inspect(db));
 
     //show events
     onEvent(db);
 
     //close connection if db is not active
-    if (!dbConfig.isActive) db.close();
+    if (!dbConfig.enabled) db.close();
 
     return db;
 };

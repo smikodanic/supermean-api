@@ -2,13 +2,13 @@
  * Main server file
  */
 
-var config = require('./app/config');
-var app = require('./app/_app');
-var port = config.env.server.port;
+const config = require('./app/config');
+const app = require('./app/_app');
+const port = config.env.server.port;
 
 
 //create HTTP server
-var server = require('http').createServer(app);
+const server = require('http').createServer(app);
 server.listen(port);
 
 

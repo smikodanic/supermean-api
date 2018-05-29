@@ -3,7 +3,7 @@
  * https://www.npmjs.com/package/vhost
  */
 
-var vhost = require('vhost');
+const vhost = require('vhost');
 
 
 module.exports = function (app, config) {

@@ -10,10 +10,10 @@
  *
  *
  */
-var passport = require('passport');
-var DigestStrategy = require('passport-http').DigestStrategy;
-var users_model = require('server/app/models/users');
-var authLib = require('server/app/lib/authLib');
+const passport = require('passport');
+const DigestStrategy = require('passport-http').DigestStrategy;
+const users_model = require('server/app/models/users');
+const authLib = require('server/app/lib/authLib');
 
 module.exports = function () {
     'use strict';
@@ -36,17 +36,17 @@ module.exports = function () {
 
                     //if username doesn't exist
                     if (!userDoc) {
-                        var err = new Error('bad username');
+                        const err = new Error('bad username');
                         err.status = 401;
                         return done(err, false);
                     }
 
                     //decoding password from DB (gives original password)
-                    var pass = authLib.base64ToStr(userDoc.pass);
-                    // var pass = authLib.decrypt(userDoc.pass);
+                    const pass = authLib.base64ToStr(userDoc.pass);
+                    // const pass = authLib.decrypt(userDoc.pass);
                     console.log(pass);
 
-                    //var 'userDoc' is transfered into req.user and can be used in controller req.user, where req.user = userDoc
+                    //const 'userDoc' is transfered into req.user and can be used in controller req.user, where req.user = userDoc
                     return done(null, userDoc, pass);
 
                 })

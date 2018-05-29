@@ -6,14 +6,14 @@
 const Schema = require('mongoose').Schema;
 
 //options
-var opts = require('./_options');
+const opts = require('./_options');
 opts.collection = 'log_errors';
 opts.strict = false;
 opts.timestamps = null; //disable timestamps
 
 
 //schema definition
-var Sch = new Schema({
+const Sch = new Schema({
     status: Number,
     level: {type: String, enum: ['error', 'warning', 'info', 'debug']},
     category: String,

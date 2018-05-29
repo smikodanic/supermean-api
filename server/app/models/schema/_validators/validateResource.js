@@ -40,7 +40,7 @@ module.exports.emailCheck = function (pathValue) {
     'use strict';
 
     //spliting email
-    var emlArr = pathValue.split('@');
+    const emlArr = pathValue.split('@');
 
     //check @ char
     if (pathValue.indexOf('@') === -1) {
