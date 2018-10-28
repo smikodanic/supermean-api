@@ -9,9 +9,10 @@ More information on [www.supermean.org](http://www.supermean.org) .
 
 ## INSTALLATION
 ```bash
-npm install -g generator-supermean
-yo supermean
-gulp
+$ git clone git@github.com:smikodanic/supermean-api.git
+$ cd supermean-api-ts
+$ rm -rf .git
+$ npm install
 ```
 
 
