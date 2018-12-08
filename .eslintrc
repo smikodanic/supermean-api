@@ -1,17 +1,28 @@
 {
+  "extends": "eslint:recommended",
 	"globals": {
-		"jQuery": true,
-        "$": true,
-		"angular": true
+		"jQuery": false,
+    "$": false,
+		"angular": false,
+    "window": true,
+    "document": true,
+    "Highcharts": true,
+    "Promise": true
 	},
 	"env": {
-		"browser": true,
+		"browser": false,
 		"node": true
 	},
 	"rules": {
-		"quotes": [1, "single"]
+		"quotes": [1, "single"],
+		"indent": [1, 2],
+		"no-var": 2,
+    "no-console": ["error", { "allow": ["log", "error", "info"] }],
+    "no-extra-boolean-cast": 0,
+    "no-unused-vars": 1
 	},
 	"parserOptions": {
-   		"ecmaVersion": 6
+		"ecmaVersion": 2017,
+    "sourceType": "module"
  	}
 }
